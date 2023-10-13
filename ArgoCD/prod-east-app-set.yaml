@@ -19,7 +19,7 @@ spec:
       destination:
         namespace: '{{global.nameOverride}}-prod-east'
         server: 'https://kubernetes.default.svc'
-      project: gotham-gh
+      project: gotham-prod-gh
       source:
         helm:
           valueFiles:

@@ -19,7 +19,7 @@ spec:
       destination:
         namespace: '{{global.nameOverride}}-code-test'
         server: 'https://kubernetes.default.svc'
-      project: gotham-gh
+      project: gotham-test-gh
       source:
         helm:
           valueFiles:
