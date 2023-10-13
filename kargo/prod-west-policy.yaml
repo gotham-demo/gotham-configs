@@ -1,6 +1,6 @@
 apiVersion: kargo.akuity.io/v1alpha1
 kind: PromotionPolicy
 metadata:
-  name: promote-to-prod
-stage: prod-ready
+  name: promote-to-prod-west
+stage: prod-west
 enableAutoPromotion: true
