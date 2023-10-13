@@ -1,0 +1,13 @@
+apiVersion: kargo.akuity.io/v1alpha1
+kind: Stage
+metadata:
+  name: prod-ready
+  namespace: gotham-kargo
+  annotations:
+    kargo.akuity.io/color: fuchsia
+spec:
+  subscriptions:
+    upstreamStages:
+    - name: code-testing
+    - name: security-testing
+

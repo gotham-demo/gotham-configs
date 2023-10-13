@@ -1,0 +1,56 @@
+﻿apiVersion: triggers.tekton.dev/v1alpha1
+kind: EventListener
+metadata:
+  name: gitea-eventlistener
+  namespace: demo-develop
+spec:
+  namespaceSelector: {}
+  resources: {}
+  serviceAccountName: pipeline
+  triggers:
+    - bindings:
+        - kind: TriggerBinding
+          ref: gitea-binding
+      interceptors:
+        - params:
+            - name: overlays
+              value:
+                - expression: >-
+                    body.repository.html_url.split('/')[size(body.repository.html_url.split('/'))-1]
+                  key: repository-name
+          ref:
+            kind: ClusterInterceptor
+            name: cel
+      name: pipeline-ci
+      template:
+        ref: gitea-template-pipeline
+status:
+  address:
+    url: 'http://el-gitea-eventlistener.demo-develop.svc.cluster.local:8080'
+  conditions:
+    - lastTransitionTime: '2023-09-06T18:08:11Z'
+      message: Deployment has minimum availability.
+      reason: MinimumReplicasAvailable
+      status: 'True'
+      type: Available
+    - lastTransitionTime: '2023-09-06T18:08:11Z'
+      message: Deployment exists
+      status: 'True'
+      type: Deployment
+    - lastTransitionTime: '2023-09-06T18:08:11Z'
+      message: >-
+        ReplicaSet "el-gitea-eventlistener-6854fcb7d7" has successfully
+        progressed.
+      reason: NewReplicaSetAvailable
+      status: 'True'
+      type: Progressing
+    - lastTransitionTime: '2023-09-06T18:08:11Z'
+      message: EventListener is ready
+      status: 'True'
+      type: Ready
+    - lastTransitionTime: '2023-09-06T18:08:11Z'
+      message: Service exists
+      status: 'True'
+      type: Service
+  configuration:
+    generatedName: el-gitea-eventlistener

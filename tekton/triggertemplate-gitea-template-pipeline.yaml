@@ -1,0 +1,66 @@
+﻿apiVersion: triggers.tekton.dev/v1alpha1
+kind: TriggerTemplate
+metadata:
+
+  name: gitea-template-pipeline
+  namespace: demo-develop
+spec:
+  params:
+    - description: The git revision
+      name: git_branch
+    - description: The git commit sha
+      name: git_commit_sha
+    - description: The git repository user name
+      name: git_repo_username
+    - description: The name of the repository
+      name: git_repo_name
+    - description: The full name of the repository
+      name: git_repo_fullname
+    - description: The full url of the repository
+      name: git_repo_full_url
+  resourcetemplates:
+    - apiVersion: tekton.dev/v1beta1
+      kind: PipelineRun
+      metadata:
+        generateName: demo-pipeline-
+        namespace: demo-develop
+      spec:
+        params:
+          - name: APP_NAME
+            value: $(tt.params.git_repo_name)
+          - name: GIT_REPO
+            value: 'http://gitea-http.gitea.svc/user1/backend.git'
+          - name: GIT_REVISION
+            value: main
+          - name: IMAGE_NAME
+            value: quay.io
+          - name: PATH_CONTEXT
+            value: .
+          - name: IMAGE_TAG
+            value: $(tt.params.git_commit_sha)
+          - name: GIT_CD_REPO
+            value: 'http://gitea-http.gitea.svc/user1/cd-repo-demo.git'
+          - name: BUILD
+            value: 'True'
+          - name: DEPLOY_ENV
+            value: develop
+          - name: SERVICE_NAME
+            value: $(tt.params.git_repo_name)
+          - name: GIT_URL
+            value: gitea-http.gitea.svc
+          - name: GIT_USER
+            value: $(tt.params.git_repo_username)
+          - name: GIT_TOKEN
+            value: gitea-token
+          - name: CONN
+            value: http
+          - name: REPO_NAME
+            value: $(tt.params.git_repo_username)-cd
+        pipelineRef:
+          name: demo-pipeline
+        serviceAccountName: pipeline
+        timeout: 1h0m0s
+        workspaces:
+          - name: workspace
+            persistentVolumeClaim:
+              claimName: pipeline

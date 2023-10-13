@@ -1,0 +1,41 @@
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: gotham-demo-prod-west-gh
+  namespace: openshift-gitops
+spec:
+  generators:
+    - git:
+        files:
+          - path: Application/gotham-demo/values-*.yaml
+        repoURL: 'https://github.com/gotham-demo/gotham-cd.git'
+        revision: main
+  template:
+    metadata:
+      annotations:
+        kargo.akuity.io/authorized-stage: 'gotham-kargo:prod-west'
+      name: '{{global.nameOverride}}-{{global.serviceName}}-prod-west'
+    spec:
+      destination:
+        namespace: '{{global.nameOverride}}-prod-west'
+        server: 'https://kubernetes.default.svc'
+      project: gotham-gh
+      source:
+        helm:
+          valueFiles:
+            - '{{path[1]}}/{{path.filename}}'
+          parameters:
+            - name: global.namespace
+              value: prod-west
+        path: '{{path[0]}}'
+        repoURL: 'https://github.com/gotham-demo/{{global.nameOverride}}-cd.git'
+        targetRevision: Deploy/prod-west
+      syncPolicy:
+        syncOptions:
+          - CreateNamespace=true
+        retry:
+          limit: 2
+          backoff:
+            duration: 5s
+            factor: 2
+            maxDuration: 3m0s

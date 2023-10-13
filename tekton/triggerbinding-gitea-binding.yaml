@@ -1,0 +1,19 @@
+﻿apiVersion: triggers.tekton.dev/v1alpha1
+kind: TriggerBinding
+metadata:
+  name: gitea-binding
+  namespace: demo-develop
+spec:
+  params:
+    - name: git_branch
+      value: $(body.ref)
+    - name: git_commit_sha
+      value: $(body.head_commit.id)
+    - name: git_repo_username
+      value: $(body.repository.owner.username)
+    - name: git_repo_name
+      value: $(body.repository.name)
+    - name: git_repo_fullname
+      value: $(body.repository.full_name)
+    - name: git_repo_full_url
+      value: $(body.repository.clone_url)

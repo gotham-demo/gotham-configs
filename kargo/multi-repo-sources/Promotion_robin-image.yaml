@@ -1,0 +1,6 @@
+apiVersion: kargo.akuity.io/v1alpha1
+kind: PromotionPolicy
+metadata:
+  name: promote-robin-image
+stage: robin-image
+enableAutoPromotion: true

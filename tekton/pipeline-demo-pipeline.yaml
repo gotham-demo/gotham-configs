@@ -1,0 +1,139 @@
+﻿apiVersion: tekton.dev/v1beta1
+kind: Pipeline
+metadata:
+  name: demo-pipeline
+  namespace: demo-develop
+spec:
+  params:
+    - default: demo
+      name: APP_NAME
+      type: string
+    - default: 'http://gitea-http.gitea.svc/user1/nodejs-demo-app.git'
+      name: GIT_REPO
+      type: string
+    - default: main
+      name: GIT_REVISION
+      type: string
+    - default: quay.io
+      name: IMAGE_NAME
+      type: string
+    - default: .
+      name: PATH_CONTEXT
+      type: string
+    - default: node
+      name: IMAGE_TAG
+      type: string
+    - default: 'http://gitea-http.gitea.svc/user1/cd-repo-demo.git'
+      name: GIT_CD_REPO
+      type: string
+    - default: 'True'
+      name: BUILD
+      type: string
+    - default: develop
+      name: DEPLOY_ENV
+      type: string
+    - default: frontend
+      name: SERVICE_NAME
+      type: string
+    - default: gitea-http.gitea.svc
+      name: GIT_URL
+      type: string
+    - default: user1
+      name: GIT_USER
+      type: string
+    - default: gitea-token
+      name: GIT_TOKEN
+      type: string
+    - default: http
+      name: CONN
+      type: string
+    - default: cd-repo-demo
+      name: REPO_NAME
+      type: string
+  tasks:
+    - name: fetch-repository
+      params:
+        - name: url
+          value: >-
+            $(params.CONN)://$(params.GIT_URL)/$(params.GIT_USER)/$(params.APP_NAME).git
+        - name: revision
+          value: $(params.GIT_REVISION)
+        - name: subdirectory
+          value: ''
+        - name: deleteExisting
+          value: 'true'
+      taskRef:
+        kind: ClusterTask
+        name: git-clone
+      workspaces:
+        - name: output
+          workspace: workspace
+    - name: build
+      params:
+        - name: IMAGE
+          value: >-
+            $(params.IMAGE_NAME)/$(params.GIT_USER)/$(params.APP_NAME):$(params.IMAGE_TAG)
+        - name: TLSVERIFY
+          value: 'false'
+        - name: CONTEXT
+          value: $(params.PATH_CONTEXT)
+      runAfter:
+        - fetch-repository
+      taskRef:
+        kind: ClusterTask
+        name: buildah
+      when:
+        - input: $(params.BUILD)
+          operator: in
+          values:
+            - 'True'
+      workspaces:
+        - name: source
+          workspace: workspace
+    - name: deploy
+      params:
+        - name: SCRIPT
+          value: >-
+            oc patch deployment $(params.APP_NAME) -p
+            '{"spec":{"template":{"spec":{"containers":[{"name":"$(params.APP_NAME)","image":"$(params.IMAGE_NAME):$(params.IMAGE_TAG)"}]}}}}'
+      runAfter:
+        - build
+      taskRef:
+        kind: ClusterTask
+        name: openshift-client
+      when:
+        - input: $(params.BUILD)
+          operator: notin
+          values:
+            - 'True'
+    - name: update-chart
+      params:
+        - name: git-url-source
+          value: $(params.GIT_URL)
+        - name: git-user
+          value: $(params.GIT_USER)
+        - name: git-repo-name
+          value: $(params.REPO_NAME)
+        - name: tag
+          value: $(params.IMAGE_TAG)
+        - name: branch
+          value: $(params.GIT_REVISION)
+        - name: git-secret-name
+          value: $(params.GIT_TOKEN)
+        - name: application-name
+          value: $(params.GIT_USER)
+        - name: deploy-env
+          value: $(params.DEPLOY_ENV)
+        - name: service-name
+          value: $(params.SERVICE_NAME)
+        - name: image
+          value: $(params.IMAGE_NAME)/$(params.GIT_USER)/$(params.APP_NAME)
+        - name: http
+          value: $(params.CONN)
+      runAfter:
+        - build
+      taskRef:
+        kind: ClusterTask
+        name: update-chart
+  workspaces:
+    - name: workspace

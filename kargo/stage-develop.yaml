@@ -1,0 +1,46 @@
+apiVersion: kargo.akuity.io/v1alpha1
+kind: Stage
+metadata:
+  name: develop
+  namespace: gotham-kargo
+  annotations:
+    kargo.akuity.io/color: lime
+spec:
+  subscriptions:
+    repos:
+      images:
+      - repoURL: quay.io/gotham/batman
+        updateStrategy: Latest
+      - repoURL: quay.io/gotham/robin
+        updateStrategy: Latest
+      - repoURL: quay.io/gotham/joker
+        updateStrategy: Latest
+      git:
+      - repoURL: https://github.com/gotham-demo/gotham-cd.git
+        branch: main
+  promotionMechanisms:
+    gitRepoUpdates:
+    - repoURL: https://github.com/gotham-demo/gotham-cd.git #https://gitea-http.gitea.svc/gotham/gotham-cd.git
+      readBranch: main
+      writeBranch: Deploy/develop # Writing to stage-specific branch prevents the formation of a loop
+      helm:
+        images:
+        - image: quay.io/gotham/batman
+          valuesFilePath: Application/gotham-demo/values-batman.yaml
+          key: image.tag # Update this key to reference the new image version
+          value: 'Tag'
+        - image: quay.io/gotham/joker
+          valuesFilePath: Application/gotham-demo/values-joker.yaml
+          key: image.tag # Update this key to reference the new image version
+          value: 'Tag'
+        - image: quay.io/gotham/robin
+          valuesFilePath: Application/gotham-demo/values-robin.yaml
+          key: image.tag # Update this key to reference the new image version
+          value: 'Tag'
+    argoCDAppUpdates:
+    - appName: gotham-batman-gh-develop
+      appNamespace: openshift-gitops
+    - appName: gotham-joker-gh-develop
+      appNamespace: openshift-gitops
+    - appName: gotham-robin-gh-develop
+      appNamespace: openshift-gitops

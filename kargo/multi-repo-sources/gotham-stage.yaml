@@ -1,0 +1,23 @@
+apiVersion: kargo.akuity.io/v1alpha1
+kind: Stage
+metadata:
+  name: gotham-image
+  namespace: gotham-kargo
+  annotations:
+    kargo.akuity.io/color: grey
+spec:
+  subscriptions:
+    repos:
+      images:
+      - repoURL: quay.io/gotham/gotham
+        updateStrategy: Latest
+  promotionMechanisms:
+    gitRepoUpdates:
+    - repoURL: https://github.com/gotham-demo/gotham-cd.git #https://gitea-http.gitea.svc/gotham/gotham-cd.git
+      writeBranch: gothem # Writing to stage-specific branch prevents the formation of a loop
+      helm:
+        images:
+        - image: quay.io/gotham/gotham
+          valuesFilePath: Application/gotham-demo/develop/values-gotham.yaml
+          key: image.tag # Update this key to reference the new image version
+          value: 'Tag'

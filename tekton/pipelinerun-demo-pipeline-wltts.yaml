@@ -1,0 +1,44 @@
+﻿apiVersion: tekton.dev/v1beta1
+kind: PipelineRun
+metadata:
+  generateName: demo-pipeline-
+spec:
+  params:
+    - name: APP_NAME
+      value: robin
+    - name: GIT_REPO
+      value: 'http://gitea-http.gitea.svc/user1/backend.git'
+    - name: GIT_REVISION
+      value: main
+    - name: IMAGE_NAME
+      value: quay.io
+    - name: PATH_CONTEXT
+      value: .
+    - name: IMAGE_TAG
+      value: f6a91fb1226c6161aba623c1996928f31756673c
+    - name: GIT_CD_REPO
+      value: 'http://gitea-http.gitea.svc/user1/cd-repo-demo.git'
+    - name: BUILD
+      value: 'True'
+    - name: DEPLOY_ENV
+      value: develop
+    - name: SERVICE_NAME
+      value: robin
+    - name: GIT_URL
+      value: gitea-http.gitea.svc
+    - name: GIT_USER
+      value: sparky-cicd
+    - name: GIT_TOKEN
+      value: gitea-token
+    - name: CONN
+      value: http
+    - name: REPO_NAME
+      value: sparky-cicd-cd
+  pipelineRef:
+    name: demo-pipeline
+  serviceAccountName: pipeline
+  timeout: 1h0m0s
+  workspaces:
+    - name: workspace
+      persistentVolumeClaim:
+        claimName: pipeline

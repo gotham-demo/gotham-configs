@@ -1,0 +1,52 @@
+apiVersion: kargo.akuity.io/v1alpha1
+kind: Stage
+metadata:
+  name: develop
+  namespace: gotham-kargo
+  annotations:
+    kargo.akuity.io/color: lime
+spec:
+  subscriptions:
+    upstreamStages:
+    - name: batman-image
+    - name: robin-image
+    - name: joker-image
+    - name: riddler-image
+    - name: gotham-image
+  promotionMechanisms:
+    gitRepoUpdates:
+    - repoURL: https://github.com/gotham-demo/gotham-cd.git #https://gitea-http.gitea.svc/gotham/gotham-cd.git
+      writeBranch: main # Writing to stage-specific branch prevents the formation of a loop
+      helm:
+        images:
+        - image: quay.io/gotham/batman
+          valuesFilePath: Application/gotham-demo/develop/values-batman.yaml
+          key: image.tag # Update this key to reference the new image version
+          value: 'Tag'
+        - image: quay.io/gotham/joker
+          valuesFilePath: Application/gotham-demo/develop/values-joker.yaml
+          key: image.tag # Update this key to reference the new image version
+          value: 'Tag'
+        - image: quay.io/gotham/robin
+          valuesFilePath: Application/gotham-demo/develop/values-robin.yaml
+          key: image.tag # Update this key to reference the new image version
+          value: 'Tag'
+        - image: quay.io/gotham/riddler
+          valuesFilePath: Application/gotham-demo/develop/values-riddler.yaml
+          key: image.tag # Update this key to reference the new image version
+          value: 'Tag'
+        - image: quay.io/gotham/gotham
+          valuesFilePath: Application/gotham-demo/develop/values-gotham.yaml
+          key: image.tag # Update this key to reference the new image version
+          value: 'Tag'
+    argoCDAppUpdates:
+    - appName: gotham-batman-gh-develop
+      appNamespace: openshift-gitops
+    - appName: gotham-joker-gh-develop
+      appNamespace: openshift-gitops
+    - appName: gotham-robin-gh-develop
+      appNamespace: openshift-gitops
+    - appName: gotham-riddler-gh-develop
+      appNamespace: openshift-gitops
+    - appName: gotham-gotham-gh-develop
+      appNamespace: openshift-gitops

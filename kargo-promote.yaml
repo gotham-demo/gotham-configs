@@ -1,0 +1,23 @@
+{{- if .Values.global.test }}
+apiVersion: batch/v1
+kind: Job
+metadata:
+  annotations:
+    argocd.argoproj.io/hook: PostSync
+    argocd.argoproj.io/hook-delete-policy: BeforeHookCreation
+    argocd.argoproj.io/sync-wave: "1"
+  name: '{{ include "app.name" . }}-{{ .Values.global.serviceName }}-test'
+spec:
+  template:
+    metadata:
+      name: test-url
+    spec:
+     restartPolicy: Never
+     containers:
+     - name: test-url
+       image: quay.io/thason/kargo-cli:v0.1.0
+       workingDir: /workspace/output
+       command: ["/bin/bash", "-c"]
+       args: ['curl {{ include "app.name" . }}-{{ .Values.global.serviceName }}:{{ .Values.deploy.ports[0].port }}/health/liveliness || exit 1']
+  backoffLimit: 1
+{{- end }}

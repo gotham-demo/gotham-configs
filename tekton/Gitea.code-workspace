@@ -1,0 +1,36 @@
+{
+	"folders": [
+		{
+			"path": "../../backend"
+		},
+		{
+			"name": "user1-cd",
+			"path": "../../user1-cd"
+		},
+		{
+			"name": "frontend",
+			"path": "../../frontend"
+		},
+		{
+			"name": "websrv",
+			"path": "../../websrv"
+		},
+		{
+			"name": "joker",
+			"path": "../../joker"
+		},
+		{
+			"name": "robin",
+			"path": "../../robin"
+		},
+		{
+			"name": "batman",
+			"path": "../../batman"
+		},
+		{
+			"name": "sparky-cicd-cd",
+			"path": ".."
+		}
+	],
+	"settings": {}
+}

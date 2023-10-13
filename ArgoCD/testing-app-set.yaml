@@ -1,0 +1,41 @@
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: gotham-demo-testing-gh
+  namespace: openshift-gitops
+spec:
+  generators:
+    - git:
+        files:
+          - path: Application/gotham-demo/values-*.yaml
+        repoURL: 'https://github.com/gotham-demo/gotham-cd.git'
+        revision: main
+  template:
+    metadata:
+      annotations:
+        kargo.akuity.io/authorized-stage: 'gotham-kargo:code-testing'
+      name: '{{global.nameOverride}}-{{global.serviceName}}-code-test'
+    spec:
+      destination:
+        namespace: '{{global.nameOverride}}-code-test'
+        server: 'https://kubernetes.default.svc'
+      project: gotham-gh
+      source:
+        helm:
+          valueFiles:
+            - '{{path[1]}}/{{path.filename}}'
+          parameters:
+            - name: global.namespace
+              value: code-test
+        path: '{{path[0]}}'
+        repoURL: 'https://github.com/gotham-demo/{{global.nameOverride}}-cd.git'
+        targetRevision: Deploy/code-test
+      syncPolicy:
+        syncOptions:
+          - CreateNamespace=true
+        retry:
+          limit: 2
+          backoff:
+            duration: 5s
+            factor: 2
+            maxDuration: 3m0s

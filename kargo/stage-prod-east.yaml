@@ -1,0 +1,37 @@
+apiVersion: kargo.akuity.io/v1alpha1
+kind: Stage
+metadata:
+  name: prod-east
+  namespace: gotham-kargo
+  annotations:
+    kargo.akuity.io/color: purple
+spec:
+  subscriptions:
+    upstreamStages:
+    - name: prod-ready
+  promotionMechanisms:
+    gitRepoUpdates:
+    - repoURL: https://github.com/gotham-demo/gotham-cd.git #https://gitea-http.gitea.svc/gotham/gotham-cd.git
+      readBranch: main
+      writeBranch: Deploy/prod-east # Writing to stage-specific branch prevents the formation of a loop
+      helm:
+        images:
+        - image: quay.io/gotham/batman
+          valuesFilePath: Application/gotham-demo/values-batman.yaml
+          key: image.tag # Update this key to reference the new image version
+          value: 'Tag'
+        - image: quay.io/gotham/joker
+          valuesFilePath: Application/gotham-demo/values-joker.yaml
+          key: image.tag # Update this key to reference the new image version
+          value: 'Tag'
+        - image: quay.io/gotham/robin
+          valuesFilePath: Application/gotham-demo/values-robin.yaml
+          key: image.tag # Update this key to reference the new image version
+          value: 'Tag'
+    argoCDAppUpdates:
+    - appName: gotham-batman-gh-prod-east
+      appNamespace: openshift-gitops
+    - appName: gotham-joker-gh-prod-east
+      appNamespace: openshift-gitops
+    - appName: gotham-robin-gh-prod-east
+      appNamespace: openshift-gitops

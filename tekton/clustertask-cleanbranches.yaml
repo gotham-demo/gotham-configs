@@ -1,0 +1,45 @@
+apiVersion: tekton.dev/v1beta1
+kind: ClusterTask
+metadata:
+  name: cleanup-branches
+spec:
+  params:
+    - default: github.com
+      description: The URL where your source repo is hosted (e.g., "github.com").
+      name: git-url-source
+      type: string
+    - default: tal-hason
+      description: Your GIT User name
+      name: git-user
+      type: string
+    - default: app-cd
+      description: Your app-cd repository name.
+      name: app-cd-repo-name
+      type: string
+    - default: develop
+      description: The base directory in the app-cd repository.
+      name: app-cd-base-dir
+      type: string
+    - default: ''
+      name: git-secret-name
+      type: string
+  steps:
+    - name: check-current-branches
+      image: quay.io/argocicd/update-deploy:pipeline  # Use your custom image here
+      script: |
+        # Your existing script remains unchanged.
+        git clone $(params.git-url-source)/$(params.git-user)/app/service.git /workspace/source
+        git -C /workspace/source branch -r | sed 's/origin\///' > /workspace/remote-branches.txt
+        cd /workspace
+        find $(params.app-cd-repo-name)/$(params.app-cd-base-dir) -name "branch-*.yaml" -exec basename {} \; | sed 's/branch-//' > /workspace/existing-branches.txt
+        comm -23 /workspace/remote-branches.txt /workspace/existing-branches.txt > /workspace/branches-to-delete.txt
+        while IFS= read -r branch; do
+          rm -f $(params.app-cd-repo-name)/$(params.app-cd-base-dir)/branch-$branch.yaml
+        done < /workspace/branches-to-delete.txt
+      env:
+        - name: GIT_TOKEN
+          valueFrom:
+            secretKeyRef:
+              key: password
+              name: $(params.git-secret-name)
+      resources: {}

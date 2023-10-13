@@ -1,0 +1,15 @@
+﻿kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: pipeline
+  namespace: demo-develop
+spec:
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 1Gi
+  volumeName: pvc-be55f9c4-657b-4066-8da9-98b592f78d2d
+  storageClassName: crc-csi-hostpath-provisioner
+  volumeMode: Filesystem
+
