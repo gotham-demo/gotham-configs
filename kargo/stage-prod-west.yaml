@@ -4,7 +4,7 @@ metadata:
   name: prod-west
   namespace: gotham-kargo
   annotations:
-    kargo.akuity.io/color: purple
+    kargo.akuity.io/color: violet
 spec:
   subscriptions:
     upstreamStages:
