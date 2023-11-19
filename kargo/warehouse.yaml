@@ -9,10 +9,10 @@ spec:
   subscriptions:
       - image:
           repoURL: quay.io/gotham/batman
-          updateStrategy: Digest
+          updateStrategy: Alphabetical
       - image:      
           repoURL: quay.io/gotham/robin
-          updateStrategy: Digest
+          updateStrategy: Alphabetical
       - git:
           repoURL: https://github.com/gotham-demo/gotham-cd.git
           branch: main
