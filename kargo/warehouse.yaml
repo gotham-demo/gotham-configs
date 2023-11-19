@@ -7,14 +7,15 @@ metadata:
     argocd.argoproj.io/sync-wave: "1"
 spec:
   subscriptions:
-    repos:
-      images:
-      - repoURL: quay.io/gotham/batman
-        updateStrategy: Latest
-      - repoURL: quay.io/gotham/robin
-        updateStrategy: Latest
-      - repoURL: quay.io/gotham/joker
-        updateStrategy: Latest
-      git:
-      - repoURL: https://github.com/gotham-demo/gotham-cd.git
-        branch: main
+      - image:
+          repoURL: quay.io/gotham/batman
+          updateStrategy: Latest
+      - image:      
+          repoURL: quay.io/gotham/robin
+          updateStrategy: Latest
+      - image:
+          repoURL: quay.io/gotham/joker
+          updateStrategy: Latest
+      - git:
+          repoURL: https://github.com/gotham-demo/gotham-cd.git
+          branch: main
