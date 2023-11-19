@@ -7,9 +7,9 @@ metadata:
     argocd.argoproj.io/sync-wave: "1"
 spec:
   subscriptions:
-      # - image:
-      #     repoURL: 'quay.io/gotham/joker'
-      #     updateStrategy: NewestBuild
+      - image:
+          repoURL: 'quay.io/gotham/joker'
+          updateStrategy: NewestBuild
       - image:
           repoURL: 'quay.io/gotham/batman'
           updateStrategy: NewestBuild
