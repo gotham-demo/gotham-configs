@@ -5,6 +5,7 @@ metadata:
   namespace: gotham-kargo
   annotations:
     kargo.akuity.io/color: violet
+    argocd.argoproj.io/sync-wave: "5"
 spec:
   subscriptions:
     upstreamStages:
