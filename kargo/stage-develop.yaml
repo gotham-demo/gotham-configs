@@ -7,7 +7,7 @@ metadata:
     kargo.akuity.io/color: lime
 spec:
   subscriptions:
-    
+    warehouse: gotham
   promotionMechanisms:
     gitRepoUpdates:
     - repoURL: https://github.com/gotham-demo/gotham-cd.git #https://gitea-http.gitea.svc/gotham/gotham-cd.git
