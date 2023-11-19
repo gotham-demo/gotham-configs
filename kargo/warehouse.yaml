@@ -8,10 +8,10 @@ metadata:
 spec:
   subscriptions:
       - image:
-          repoURL: 'quay.io/gotham/batman'
+          repoURL: quay.io/gotham/batman
           updateStrategy: NewestBuild
       - image:      
-          repoURL: 'quay.io/gotham/robin'
+          repoURL: quay.io/gotham/robin
           updateStrategy: NewestBuild
       - git:
           repoURL: https://github.com/gotham-demo/gotham-cd.git
