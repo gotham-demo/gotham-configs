@@ -2,7 +2,7 @@ apiVersion: kargo.akuity.io/v1alpha1
 kind: Warehouse
 metadata:
   name: gotham
-  namespace: kargo-demo
+  namespace: gotham-kargo
 spec:
   subscriptions:
     repos:
