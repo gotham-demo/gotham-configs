@@ -13,9 +13,9 @@ spec:
       - image:      
           repoURL: quay.io/gotham/robin
           updateStrategy: NewestBuild
-      - image:
-          repoURL: quay.io/gotham/joker
-          updateStrategy: NewestBuild
+      # - image:
+      #     repoURL: quay.io/gotham/joker
+      #     updateStrategy: NewestBuild
       - git:
           repoURL: https://github.com/gotham-demo/gotham-cd.git
           branch: main
