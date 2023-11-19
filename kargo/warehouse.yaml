@@ -9,7 +9,7 @@ spec:
   subscriptions:
       - image:
           repoURL: 'quay.io/gotham/joker'
-          updateStrategy: NewestBuild
+          # updateStrategy: NewestBuild
       - image:
           repoURL: 'quay.io/gotham/batman'
           updateStrategy: NewestBuild
