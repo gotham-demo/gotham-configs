@@ -8,8 +8,8 @@ metadata:
     argocd.argoproj.io/sync-wave: "5"
 spec:
   subscriptions:
-    stages:
-    - develop
+    upstreamStages:
+    - name: develop
   promotionMechanisms:
     gitRepoUpdates:
     - repoURL: https://github.com/gotham-demo/gotham-cd.git #https://gitea-http.gitea.svc/gotham/gotham-cd.git
