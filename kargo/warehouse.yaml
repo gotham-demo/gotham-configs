@@ -10,6 +10,9 @@ spec:
       - image:
           repoURL: quay.io/gotham/batman
           updateStrategy: Alphabetical
+      - image:
+          repoURL: quay.io/gotham/joker
+          updateStrategy: Alphabetical
       - image:      
           repoURL: quay.io/gotham/robin
           updateStrategy: Alphabetical
