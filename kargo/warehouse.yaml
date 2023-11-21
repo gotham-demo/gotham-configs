@@ -9,13 +9,13 @@ spec:
   subscriptions:
       - image:
           repoURL: quay.io/gotham/batman
-          updateStrategy: NewestBuild
+          tagSelectionStrategy: NewestBuild
       - image:
           repoURL: quay.io/gotham/joker
-          updateStrategy: NewestBuild
+          tagSelectionStrategy: NewestBuild
       - image:      
           repoURL: quay.io/gotham/robin
-          updateStrategy: NewestBuild
+          tagSelectionStrategy: NewestBuild
       - git:
           repoURL: https://github.com/gotham-demo/gotham-cd.git
           branch: main
