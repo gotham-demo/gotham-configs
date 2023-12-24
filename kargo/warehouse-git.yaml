@@ -7,6 +7,6 @@ metadata:
     argocd.argoproj.io/sync-wave: "1"
 spec:
   subscriptions:
-      - git:
-          repoURL: https://github.com/gotham-demo/gotham-cd.git
-          branch: main
+    - git:
+        repoURL: https://github.com/gotham-demo/gotham-cd.git
+        branch: main

@@ -7,12 +7,12 @@ metadata:
     argocd.argoproj.io/sync-wave: "1"
 spec:
   subscriptions:
-      - image:
-          repoURL: quay.io/gotham/batman
-          tagSelectionStrategy: NewestBuild
-      - image:
-          repoURL: quay.io/gotham/joker
-          tagSelectionStrategy: NewestBuild
-      - image:      
-          repoURL: quay.io/gotham/robin
-          tagSelectionStrategy: NewestBuild
+    - image:
+        repoURL: quay.io/gotham/batman
+        tagSelectionStrategy: NewestBuild
+    - image:
+        repoURL: quay.io/gotham/joker
+        tagSelectionStrategy: NewestBuild
+    - image:      
+        repoURL: quay.io/gotham/robin
+        tagSelectionStrategy: NewestBuild
