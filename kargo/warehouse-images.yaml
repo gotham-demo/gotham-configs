@@ -16,6 +16,3 @@ spec:
       - image:      
           repoURL: quay.io/gotham/robin
           tagSelectionStrategy: NewestBuild
-      - git:
-          repoURL: https://github.com/gotham-demo/gotham-cd.git
-          branch: main
