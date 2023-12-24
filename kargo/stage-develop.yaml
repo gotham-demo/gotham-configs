@@ -14,11 +14,11 @@ spec:
     - repoURL: https://github.com/gotham-demo/gotham-cd.git #https://gitea-http.gitea.svc/gotham/gotham-cd.git
       readBranch: main
       writeBranch: Deploy/develop # Writing to stage-specific branch prevents the formation of a loop
-      render:
-        images:
-        - image: quay.io/gotham/batman
-        - image: quay.io/gotham/joker
-        - image: quay.io/gotham/robin
+      # render:
+      #   images:
+      #   - image: quay.io/gotham/batman
+      #   - image: quay.io/gotham/joker
+      #   - image: quay.io/gotham/robin
       helm:
         images:
         - image: quay.io/gotham/batman
