@@ -1,12 +1,15 @@
 apiVersion: kargo.akuity.io/v1alpha1
 kind: Warehouse
 metadata:
-  name: gotham-images
+  name: gotham-warehouse
   namespace: gotham-kargo
   annotations:
     argocd.argoproj.io/sync-wave: "1"
 spec:
   subscriptions:
+    - git:
+        repoURL: https://github.com/gotham-demo/gotham-cd.git
+        branch: main
     - image:
         repoURL: quay.io/gotham/batman
         tagSelectionStrategy: NewestBuild
