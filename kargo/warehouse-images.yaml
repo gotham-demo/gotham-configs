@@ -1,7 +1,7 @@
 apiVersion: kargo.akuity.io/v1alpha1
 kind: Warehouse
 metadata:
-  name: gotham
+  name: gotham-images
   namespace: gotham-kargo
   annotations:
     argocd.argoproj.io/sync-wave: "1"
