@@ -15,20 +15,20 @@ spec:
       readBranch: main
       writeBranch: Deploy/develop # Writing to stage-specific branch prevents the formation of a loop
       render: {}
-      helm:
-        images:
-        - image: quay.io/gotham/batman
-          valuesFilePath: Application/gotham-demo/values-batman.yaml
-          key: image.tag # Update this key to reference the new image version
-          value: 'Tag'
-        - image: quay.io/gotham/joker
-          valuesFilePath: Application/gotham-demo/values-joker.yaml
-          key: image.tag # Update this key to reference the new image version
-          value: 'Tag'
-        - image: quay.io/gotham/robin
-          valuesFilePath: Application/gotham-demo/values-robin.yaml
-          key: image.tag # Update this key to reference the new image version
-          value: 'Tag'
+      # helm:
+      #   images:
+      #   - image: quay.io/gotham/batman
+      #     valuesFilePath: Application/gotham-demo/values-batman.yaml
+      #     key: image.tag # Update this key to reference the new image version
+      #     value: 'Tag'
+      #   - image: quay.io/gotham/joker
+      #     valuesFilePath: Application/gotham-demo/values-joker.yaml
+      #     key: image.tag # Update this key to reference the new image version
+      #     value: 'Tag'
+      #   - image: quay.io/gotham/robin
+      #     valuesFilePath: Application/gotham-demo/values-robin.yaml
+      #     key: image.tag # Update this key to reference the new image version
+      #     value: 'Tag'
     argoCDAppUpdates:
     - appName: gotham-batman-gh-develop
       appNamespace: openshift-gitops
